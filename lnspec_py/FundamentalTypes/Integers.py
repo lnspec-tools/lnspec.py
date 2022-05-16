@@ -37,45 +37,16 @@ class u64Integer(Integer):
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
-class tu16(Integer):
+class tu(Integer):
     def __init__(self, val):
+        self.uintRange = [255, 65535, 16777215, 4294967295, 1099511627775, 281474976710655, 72057594037927935, 18446744073709551615]
         self.val = val
     
     def encode(self):
-        if self.val <= 255:
-            self.val = int.to_bytes(self.val,1, "big")
-        else:    
-            self.val = int.to_bytes(self.val,2, "big")
-
-    def decode(self):
-        self.val = int.from_bytes(self.val, "big")
-
-
-class tu32(Integer):
-    def __init__(self, val):
-        self.val = val
-    
-    def encode(self):
-        if self.val <= 255:
-            self.val = int.to_bytes(self.val,1, "big")
-        elif self.val <= 65535:    
-            self.val = int.to_bytes(self.val,2, "big")
-        elif self.val <= 16777215:
-            self.val = int.to_bytes(self.val,3, "big")
-
-    def decode(self):
-        self.val = int.from_bytes(self.val, "big")
-
-
-class tu64(Integer):
-    def __init__(self, val):
-        self.val = val
-    
-    def encode(self):
-        if self.val <= 255:
-            self.val = int.to_bytes(self.val,1, "big")
-        else:    
-            self.val = int.to_bytes(self.val,2, "big")
+        for i in range(len(self.uintRange)):
+            if self.val <= self.uintRange[i]:
+                self.val = int.to_bytes(self.val,i+1, "big")
+                break
 
     def decode(self):
         self.val = int.from_bytes(self.val, "big")

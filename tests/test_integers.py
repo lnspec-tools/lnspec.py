@@ -29,13 +29,13 @@ def test_u64Integer():
 
 
 
-def test_tu16Integer():
-    vals = [16, 65535]
-    expected = ["10", "ffff"]
+def test_tuInteger():
+    a = Integers.tu(0)
+    vals = a.uintRange
     for i in range(len(vals)):
-        a = Integers.tu16(vals[i])
+        a = Integers.tu(vals[i])
         a.encode()
-        assert a.val.hex() == expected[i]
+        assert a.val.hex() == 'f' * len(a.val.hex())
         a.decode()
         assert a.val == vals[i]
 
