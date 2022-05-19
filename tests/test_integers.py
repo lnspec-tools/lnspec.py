@@ -41,8 +41,8 @@ def test_tuInteger():
 
 
 def test_bigsize():
-    decoded_tests = ["00", "fc", "fd00fd", 'fdffff', 'fe00010000', 'feffffffff', 'ff0000000100000000', 'ffffffffffffffffff', 'fd00fc']
-    expected_decoded = [0, 252, 253, 65535, 65536,4294967295, 4294967296, 18446744073709551615, "decoded bigsize is not canonical"]
+    decoded_tests = ["00", "fc", "fd00fd", 'fdffff', 'fe00010000', 'feffffffff', 'ff0000000100000000', 'ffffffffffffffffff', 'fd00fc', 'fe0000ffff', 'ff00000000ffffffff']
+    expected_decoded = [0, 252, 253, 65535, 65536,4294967295, 4294967296, 18446744073709551615] + ["decoded bigsize is not canonical"] * 3
     for i in range(len(decoded_tests)):
         a = Integers.bigsize(decoded_tests[i])
         a.decode()
