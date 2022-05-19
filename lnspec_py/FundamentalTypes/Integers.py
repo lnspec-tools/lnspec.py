@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import io
 
 class Integer(ABC):
     @abstractmethod
@@ -50,3 +51,42 @@ class tu(Integer):
 
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
+
+class bigsize(Integer):
+    def __init__(self, val):
+        self.val = val
+
+    def decode(self):
+        binary = bytes.fromhex(self.val)
+        print(len(binary))
+        if len(binary) in [1, 3, 5, 9]:
+            return 'decoded bigsize is not canonical'
+        _type = binary[0]
+        if _type < 0xFD:
+            self.val = int.from_bytes(binary, 'big')
+        elif _type == 0xFD:
+            self.val = int.from_bytes(binary[1:3], 'big')
+        elif _type == 0xFE:
+            self.val = int.from_bytes(binary[1:5], 'big')
+        else:
+            self.val = int.from_bytes(binary[1:9], 'big')
+
+    def encode(self):
+        if self.val < 0xfd:
+            size = 1
+            _type = None
+        elif self.val < 0x10000:
+            size = 2
+            _type = 0xfd
+        elif self.val < 0x100000000:
+            size = 4
+            _type = 0xfe
+        else:
+            size = 8
+            _type = 0xff
+        self.val = int.to_bytes(self.val, size, "big")
+        if _type:
+            self.val = int.to_bytes(_type, 1, "big") + self.val[0:]
+
+
+   
