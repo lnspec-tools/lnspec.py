@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
+from distutils.log import error
 import io
+
+from numpy import byte
 
 class Integer(ABC):
     @abstractmethod
@@ -57,21 +60,32 @@ class bigsize(Integer):
         self.val = val
 
     def decode(self):
+        if type(self.val) == bytes:
+            self.val = self.val.hex()
         binary = bytes.fromhex(self.val)
         if (len(binary) == 3 and int.from_bytes(binary[1:],"big") < 0xFD) or (len(binary) == 5 and int.from_bytes(binary[1:],"big") <= 0xFFFF) or (len(binary) == 9 and int.from_bytes(binary[1:],"big") <= 0xFFFFFFFF):
-            self.val = 'decoded bigsize is not canonical'
-            return
-        if len(binary) not in [1, 3, 5, 9]:
-            self.val = "unexpected EOF"
-            return
+            self.val = 0
+            raise ValueError("decoded bigsize is not canonical")
+        if len(binary) == 0:
+            self.val = 0
+            raise ValueError("unexpected EOF")
         _type = binary[0]
         if _type < 0xFD:
             self.val = int.from_bytes(binary, 'big')
         elif _type == 0xFD:
+            if len(binary) != 3:
+                self.val = 0
+                raise ValueError("unexpected EOF")
             self.val = int.from_bytes(binary[1:3], 'big')
         elif _type == 0xFE:
+            if len(binary) != 5:
+                self.val = 0
+                raise ValueError("unexpected EOF")
             self.val = int.from_bytes(binary[1:5], 'big')
         elif _type == 0xFF:
+            if len(binary) != 9:
+                self.val = 0
+                raise ValueError("unexpected EOF")
             self.val = int.from_bytes(binary[1:9], 'big')
 
     def encode(self):
