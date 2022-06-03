@@ -37,3 +37,14 @@ def test_req_type_missing_or_extra():
         a = TLV_record(x)
         with pytest.raises(AssertionError) as info:
             a.decode()
+
+def test_decode2():
+    a = TLV_record("0208deadbeef1badbeef03041bad1dea")
+    a.decode2()
+    expected = [['02', '08', "0xdeadbeef1badbeef"], ["03", "04", "0x1bad1dea"]]
+    for x in expected:
+        assert x[0] in [str(i) for i in a.types]
+        assert x[1] in [str(i) for i in a.lengths]
+        assert x[2] in a.values
+
+    

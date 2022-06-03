@@ -4,13 +4,14 @@ from ..FundamentalTypes.Integers import bigsize
 class TLV_record():
     def __init__(self, raw) -> None:
         self.raw = raw
-        self.type = None
-        self.length = None
-        self.value = None
-        self.decoded = None
+        self.types = []
+        self.lengths = []
+        self.values = []
+        self.decodeds = []
     
     def decode(self):
-        assert self.raw[:4] == '0208'
+        _type = self.raw[:2]
+        lenght = self.raw[2:4]
         assert self.raw[20:24] == '0304'
         if len(self.raw) > 32:
             assert self.raw[32:36] == '0404'
@@ -28,6 +29,20 @@ class TLV_record():
         self.value = binary[12: self.length]
         self.decoded = str(self.type) + ' ' + str(self.length) + ' ' + str(self.value.hex())
         print(self.decoded)
+
+
+    def decode2(self):
+        n = 0
+        while n < len(self.raw):
+            self.types.append(self.raw[n:n+2])
+            n+=2
+            length = self.raw[n:n+2]
+            self.lengths.append(length)
+            n+=2 
+            self.values.append('0x' + str(bytes.fromhex(self.raw[n:n+int(length, 16)*2]).hex()))
+            n+= int(length, 16)*2
+            # self.decoded = str(self.type) + ' ' + str(self.length) + ' ' + str(self.value)
+
 
     def encode(self):
         pass
