@@ -1,5 +1,4 @@
 import sys
-import path
 import pytest
 from lnspec_py.abstractTypes.tlvRecord import TLV_record
 

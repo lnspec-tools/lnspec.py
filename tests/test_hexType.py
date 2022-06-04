@@ -1,5 +1,4 @@
 import sys
-import path
 import lnspec_py.FundamentalTypes.hexType as hexType
 
 

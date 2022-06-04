@@ -1,5 +1,4 @@
 import sys
-import path
 import pytest
 import lnspec_py.FundamentalTypes.Integers as Integers
 
