@@ -1,9 +1,5 @@
 import sys
 import path
-
-directory = path.Path(__file__).abspath()
-# setting path
-sys.path.append(directory.parent.parent)
 import lnspec_py.FundamentalTypes.hexType as hexType
 
 
