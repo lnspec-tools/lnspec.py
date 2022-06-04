@@ -11,7 +11,7 @@ class Integer(ABC):
     def decode(self):
         pass
 
-class u16Integer(Integer):
+class u16Int(Integer):
     def __init__(self, val):
         self.val = val
     
@@ -21,7 +21,7 @@ class u16Integer(Integer):
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
-class u32Integer(Integer):
+class u32Int(Integer):
     def __init__(self, val):
         self.val = val
     
@@ -31,7 +31,7 @@ class u32Integer(Integer):
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
-class u64Integer(Integer):
+class u64Int(Integer):
     def __init__(self, val):
         self.val = val
     
@@ -41,7 +41,7 @@ class u64Integer(Integer):
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
-class tu(Integer):
+class tuInt(Integer):
     def __init__(self, val):
         self.uintRange = [255, 65535, 16777215, 4294967295, 1099511627775, 281474976710655, 72057594037927935, 18446744073709551615]
         self.val = val
@@ -55,7 +55,7 @@ class tu(Integer):
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
-class bigsize(Integer):
+class bigsizeInt(Integer):
     def __init__(self, val):
         self.val = val
 

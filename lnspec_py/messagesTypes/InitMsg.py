@@ -1,5 +1,5 @@
 from msg import message
-from ..FundamentalTypes import Integers
+from ..fundamental import Integers
 
 class InitMessage(message):
     def __init__(self, _type : Integers.u16Integer, data : dict):
