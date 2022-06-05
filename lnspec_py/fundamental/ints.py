@@ -13,6 +13,7 @@ class Integer(ABC):
     def decode(self):
         pass
 
+
 class u16Int(Integer):
     def __init__(self, val):
         self.val = val
@@ -22,6 +23,7 @@ class u16Int(Integer):
 
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
+
 
 class u32Int(Integer):
     def __init__(self, val):
@@ -33,6 +35,7 @@ class u32Int(Integer):
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
+
 class u64Int(Integer):
     def __init__(self, val):
         self.val = val
@@ -42,6 +45,7 @@ class u64Int(Integer):
 
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
+
 
 class tuInt(Integer):
     def __init__(self, val):
@@ -65,6 +69,7 @@ class tuInt(Integer):
 
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
+
 
 class bigsizeInt(Integer):
     def __init__(self, val):
