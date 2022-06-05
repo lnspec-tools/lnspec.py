@@ -1,5 +1,4 @@
 import sys
-import path
 import pytest
 
 directory = path.Path(__file__).abspath()  
@@ -21,6 +20,7 @@ def test_u32Int():
     a.decode()
     assert a.val == 4294967295
 
+
 def test_u64Integer():
     a = Integers.u64Int(18446744073709551615)
     a.encode()
@@ -29,14 +29,13 @@ def test_u64Integer():
     assert a.val == 18446744073709551615
 
 
-
 def test_tuInteger():
     a = Integers.tuInt(0)
     vals = a.uintRange
     for i in range(len(vals)):
         a = Integers.tuInt(vals[i])
         a.encode()
-        assert a.val.hex() == 'f' * len(a.val.hex())
+        assert a.val.hex() == "f" * len(a.val.hex())
         a.decode()
         assert a.val == vals[i]
 

@@ -4,58 +4,94 @@ import io
 
 from numpy import byte
 
+
 class Integer(ABC):
     @abstractmethod
     def encode(self):
         pass
+
     def decode(self):
         pass
 
+<<<<<<< HEAD:lnspec_py/fundamental/ints.py
 class u16Int(Integer):
+=======
+
+class u16Integer(Integer):
+>>>>>>> 9927747ce3649c2601473f87cda0617ab089759a:lnspec_py/FundamentalTypes/Integers.py
     def __init__(self, val):
         self.val = val
-    
+
     def encode(self):
-        self.val = int.to_bytes(self.val,2,"big")
+        self.val = int.to_bytes(self.val, 2, "big")
 
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
+<<<<<<< HEAD:lnspec_py/fundamental/ints.py
 class u32Int(Integer):
+=======
+
+class u32Integer(Integer):
+>>>>>>> 9927747ce3649c2601473f87cda0617ab089759a:lnspec_py/FundamentalTypes/Integers.py
     def __init__(self, val):
         self.val = val
-    
+
     def encode(self):
-        self.val = int.to_bytes(self.val,4,"big")
+        self.val = int.to_bytes(self.val, 4, "big")
 
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
+<<<<<<< HEAD:lnspec_py/fundamental/ints.py
 class u64Int(Integer):
+=======
+
+class u64Integer(Integer):
+>>>>>>> 9927747ce3649c2601473f87cda0617ab089759a:lnspec_py/FundamentalTypes/Integers.py
     def __init__(self, val):
         self.val = val
-    
+
     def encode(self):
-        self.val = int.to_bytes(self.val,8,"big")
+        self.val = int.to_bytes(self.val, 8, "big")
 
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
+<<<<<<< HEAD:lnspec_py/fundamental/ints.py
 class tuInt(Integer):
+=======
+
+class tu(Integer):
+>>>>>>> 9927747ce3649c2601473f87cda0617ab089759a:lnspec_py/FundamentalTypes/Integers.py
     def __init__(self, val):
-        self.uintRange = [255, 65535, 16777215, 4294967295, 1099511627775, 281474976710655, 72057594037927935, 18446744073709551615]
+        self.uintRange = [
+            255,
+            65535,
+            16777215,
+            4294967295,
+            1099511627775,
+            281474976710655,
+            72057594037927935,
+            18446744073709551615,
+        ]
         self.val = val
-    
+
     def encode(self):
         for i in range(len(self.uintRange)):
             if self.val <= self.uintRange[i]:
-                self.val = int.to_bytes(self.val,i+1, "big")
+                self.val = int.to_bytes(self.val, i + 1, "big")
                 break
 
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
+<<<<<<< HEAD:lnspec_py/fundamental/ints.py
 class bigsizeInt(Integer):
+=======
+
+class bigsize(Integer):
+>>>>>>> 9927747ce3649c2601473f87cda0617ab089759a:lnspec_py/FundamentalTypes/Integers.py
     def __init__(self, val):
         self.val = val
 
@@ -63,7 +99,11 @@ class bigsizeInt(Integer):
         if type(self.val) == bytes:
             self.val = self.val.hex()
         binary = bytes.fromhex(self.val)
-        if (len(binary) == 3 and int.from_bytes(binary[1:],"big") < 0xFD) or (len(binary) == 5 and int.from_bytes(binary[1:],"big") <= 0xFFFF) or (len(binary) == 9 and int.from_bytes(binary[1:],"big") <= 0xFFFFFFFF):
+        if (
+            (len(binary) == 3 and int.from_bytes(binary[1:], "big") < 0xFD)
+            or (len(binary) == 5 and int.from_bytes(binary[1:], "big") <= 0xFFFF)
+            or (len(binary) == 9 and int.from_bytes(binary[1:], "big") <= 0xFFFFFFFF)
+        ):
             self.val = 0
             raise ValueError("decoded bigsize is not canonical")
         if len(binary) == 0:
@@ -71,39 +111,36 @@ class bigsizeInt(Integer):
             raise ValueError("unexpected EOF")
         _type = binary[0]
         if _type < 0xFD:
-            self.val = int.from_bytes(binary, 'big')
+            self.val = int.from_bytes(binary, "big")
         elif _type == 0xFD:
             if len(binary) != 3:
                 self.val = 0
                 raise ValueError("unexpected EOF")
-            self.val = int.from_bytes(binary[1:3], 'big')
+            self.val = int.from_bytes(binary[1:3], "big")
         elif _type == 0xFE:
             if len(binary) != 5:
                 self.val = 0
                 raise ValueError("unexpected EOF")
-            self.val = int.from_bytes(binary[1:5], 'big')
+            self.val = int.from_bytes(binary[1:5], "big")
         elif _type == 0xFF:
             if len(binary) != 9:
                 self.val = 0
                 raise ValueError("unexpected EOF")
-            self.val = int.from_bytes(binary[1:9], 'big')
+            self.val = int.from_bytes(binary[1:9], "big")
 
     def encode(self):
-        if self.val < 0xfd:
+        if self.val < 0xFD:
             size = 1
             _type = None
         elif self.val < 0x10000:
             size = 2
-            _type = 0xfd
+            _type = 0xFD
         elif self.val < 0x100000000:
             size = 4
-            _type = 0xfe
+            _type = 0xFE
         else:
             size = 8
-            _type = 0xff
+            _type = 0xFF
         self.val = int.to_bytes(self.val, size, "big")
         if _type:
             self.val = int.to_bytes(_type, 1, "big") + self.val[0:]
-
-
-   
