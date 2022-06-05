@@ -22,6 +22,10 @@ class u16Int(Integer):
         self.val = int.to_bytes(self.val, 2, "big")
 
     def decode(self):
+        if type(self.val) == str:
+            print(self.val)
+            self.val = bytes.fromhex(self.val)
+            print(self.val)
         self.val = int.from_bytes(self.val, "big")
 
 
