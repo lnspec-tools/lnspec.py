@@ -1,10 +1,11 @@
 import sys
 import pytest
 
-directory = path.Path(__file__).abspath()  
+directory = path.Path(__file__).abspath()
 # setting path
 sys.path.append(directory.parent.parent)
 import lnspec_py.fundamental.ints as Integers
+
 
 def test_u16Int():
     a = Integers.u16Int(16)
@@ -12,6 +13,7 @@ def test_u16Int():
     assert a.val.hex() == "0010"
     a.decode()
     assert a.val == 16
+
 
 def test_u32Int():
     a = Integers.u32Int(4294967295)
@@ -40,9 +42,27 @@ def test_tuInteger():
         assert a.val == vals[i]
 
 
-def test_bigsizeIntInt():
-    decoded_tests = ["00", "fc", "fd00fd", 'fdffff', 'fe00010000', 'feffffffff', 'ff0000000100000000', 'ffffffffffffffffff']
-    expected_decoded = [0, 252, 253, 65535, 65536,4294967295, 4294967296, 18446744073709551615]
+def test_bigsizeInt():
+    decoded_tests = [
+        "00",
+        "fc",
+        "fd00fd",
+        "fdffff",
+        "fe00010000",
+        "feffffffff",
+        "ff0000000100000000",
+        "ffffffffffffffffff",
+    ]
+    expected_decoded = [
+        0,
+        252,
+        253,
+        65535,
+        65536,
+        4294967295,
+        4294967296,
+        18446744073709551615,
+    ]
     for i in range(len(decoded_tests)):
         a = Integers.bigsizeInt(decoded_tests[i])
         a.decode()
@@ -51,18 +71,51 @@ def test_bigsizeIntInt():
         a.encode()
         assert a.val.hex() == decoded_tests[i]
 
+
 def test_bigsizeInt_ERROR():
-    error_tests = [ 'fd00fc', 'fe0000ffff', 'ff00000000ffffffff', 'fd00', 'feffff', 'ffffffffff', '', 'fd', 'fe', 'ff']
-    expected_errors = ["decoded bigsizeInt is not canonical"] * 3 + ["unexpected EOF"] * 7
+    error_tests = [
+        "fd00fc",
+        "fe0000ffff",
+        "ff00000000ffffffff",
+        "fd00",
+        "feffff",
+        "ffffffffff",
+        "",
+        "fd",
+        "fe",
+        "ff",
+    ]
+    expected_errors = ["decoded bigsizeInt is not canonical"] * 3 + [
+        "unexpected EOF"
+    ] * 7
     for i in range(len(error_tests)):
-        a = Integers.bigsizeInt(error_tests[i])    
+        a = Integers.bigsizeInt(error_tests[i])
         with pytest.raises(ValueError) as info:
-             a.decode()
-             assert expected_errors[i] in str(info)
-    
+            a.decode()
+            assert expected_errors[i] in str(info)
+
+
 def test_bigsizeInt_encode():
-    encode_tests = [0, 252, 253, 65535, 65536, 4294967295, 4294967296, 18446744073709551615]
-    expected_encode = ["00", "fc", "fd00fd", "fdffff", "fe00010000", "feffffffff", "ff0000000100000000", "ffffffffffffffffff"]
+    encode_tests = [
+        0,
+        252,
+        253,
+        65535,
+        65536,
+        4294967295,
+        4294967296,
+        18446744073709551615,
+    ]
+    expected_encode = [
+        "00",
+        "fc",
+        "fd00fd",
+        "fdffff",
+        "fe00010000",
+        "feffffffff",
+        "ff0000000100000000",
+        "ffffffffffffffffff",
+    ]
     for i in range(len(encode_tests)):
         a = Integers.bigsizeInt(encode_tests[i])
         a.encode()

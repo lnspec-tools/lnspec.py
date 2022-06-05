@@ -13,12 +13,7 @@ class Integer(ABC):
     def decode(self):
         pass
 
-<<<<<<< HEAD:lnspec_py/fundamental/ints.py
 class u16Int(Integer):
-=======
-
-class u16Integer(Integer):
->>>>>>> 9927747ce3649c2601473f87cda0617ab089759a:lnspec_py/FundamentalTypes/Integers.py
     def __init__(self, val):
         self.val = val
 
@@ -28,12 +23,7 @@ class u16Integer(Integer):
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
-<<<<<<< HEAD:lnspec_py/fundamental/ints.py
 class u32Int(Integer):
-=======
-
-class u32Integer(Integer):
->>>>>>> 9927747ce3649c2601473f87cda0617ab089759a:lnspec_py/FundamentalTypes/Integers.py
     def __init__(self, val):
         self.val = val
 
@@ -43,12 +33,7 @@ class u32Integer(Integer):
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
-<<<<<<< HEAD:lnspec_py/fundamental/ints.py
 class u64Int(Integer):
-=======
-
-class u64Integer(Integer):
->>>>>>> 9927747ce3649c2601473f87cda0617ab089759a:lnspec_py/FundamentalTypes/Integers.py
     def __init__(self, val):
         self.val = val
 
@@ -58,12 +43,7 @@ class u64Integer(Integer):
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
-<<<<<<< HEAD:lnspec_py/fundamental/ints.py
 class tuInt(Integer):
-=======
-
-class tu(Integer):
->>>>>>> 9927747ce3649c2601473f87cda0617ab089759a:lnspec_py/FundamentalTypes/Integers.py
     def __init__(self, val):
         self.uintRange = [
             255,
@@ -86,12 +66,7 @@ class tu(Integer):
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
 
-<<<<<<< HEAD:lnspec_py/fundamental/ints.py
 class bigsizeInt(Integer):
-=======
-
-class bigsize(Integer):
->>>>>>> 9927747ce3649c2601473f87cda0617ab089759a:lnspec_py/FundamentalTypes/Integers.py
     def __init__(self, val):
         self.val = val
 

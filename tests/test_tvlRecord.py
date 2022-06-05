@@ -1,7 +1,7 @@
 import sys
 import pytest
 
-directory = path.Path(__file__).abspath()  
+directory = path.Path(__file__).abspath()
 # setting path
 sys.path.append(directory.parent.parent)
 from lnspec_py.abstract.tlvRecord import TLVRecord
@@ -10,14 +10,14 @@ from lnspec_py.abstract.tlvRecord import TLVRecord
 def test_simple_good_case():
     a = TLVRecord("0208deadbeef1badbeef03041bad1dea")
     a.decode()
-    expected = [['02', '08', "0xdeadbeef1badbeef"], ["03", "04", "0x1bad1dea"]]
+    expected = [["02", "08", "0xdeadbeef1badbeef"], ["03", "04", "0x1bad1dea"]]
     for x in expected:
         assert x[0] in [str(i) for i in a.types]
         assert x[1] in [str(i) for i in a.lengths]
         assert x[2] in a.values
     b = TLVRecord("0208deadbeef1badbeef03041bad1dea040401020304")
     b.decode()
-    expected = [['02', '08', "0xdeadbeef1badbeef"], ["03", "04", "0x1bad1dea"]]
+    expected = [["02", "08", "0xdeadbeef1badbeef"], ["03", "04", "0x1bad1dea"]]
     for x in expected:
         assert x[0] in [str(i) for i in b.types]
         assert x[1] in [str(i) for i in b.lengths]
@@ -52,13 +52,12 @@ def test_req_type_missing_or_extra():
         with pytest.raises(Exception) as info:
             a.decode()
 
+
 def test_decode2():
     a = TLVRecord("0208deadbeef1badbeef03041bad1dea")
     a.decode()
-    expected = [['02', '08', "0xdeadbeef1badbeef"], ["03", "04", "0x1bad1dea"]]
+    expected = [["02", "08", "0xdeadbeef1badbeef"], ["03", "04", "0x1bad1dea"]]
     for x in expected:
         assert x[0] in [str(i) for i in a.types]
         assert x[1] in [str(i) for i in a.lengths]
         assert x[2] in a.values
-
-    
