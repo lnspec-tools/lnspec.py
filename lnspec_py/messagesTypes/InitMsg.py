@@ -12,6 +12,6 @@ class InitMessage(message):
         self.type.decode()
         self.data = InitData(self.raw[4:])
         self.data.decode()
-        
+
     def encode(self):
         pass
