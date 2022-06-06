@@ -1,6 +1,6 @@
 import pytest
 
-from lnspec_py.messagesTypes.InitMsg import InitMessage
+from lnspec_py.messagesTypes.Init_Msg import InitMessage
 
 
 def test_simple_good_case():

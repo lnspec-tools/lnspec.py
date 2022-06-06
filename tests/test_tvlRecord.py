@@ -1,6 +1,6 @@
 import pytest
 
-from lnspec_py.abstract.tlvRecord import TLVRecord
+from lnspec_py.abstract.tlv_Record import TLVRecord
 
 
 def test_simple_good_case():

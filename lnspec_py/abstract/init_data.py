@@ -1,5 +1,5 @@
 from ..fundamental.ints import u16Int
-from .tlvRecord import TLVRecord
+from .tlv_Record import TLVRecord
 
 
 class InitData:
