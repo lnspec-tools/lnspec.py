@@ -1,10 +1,11 @@
 from curses import raw
 from ..fundamental.ints import bigsizeInt
 
-'''
+"""
 This class represent a single TVL record 
 as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#type-length-value-format
-'''
+"""
+
 
 class TVLRecord:
     def __init__(self, raw) -> None:

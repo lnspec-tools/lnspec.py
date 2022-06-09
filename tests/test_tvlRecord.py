@@ -9,6 +9,7 @@ Test for TVL reader
 3. Compare result types, lenghts with expected values
 """
 
+
 def test_simple_good_case():
     a = TVLRecord("0208deadbeef1badbeef03041bad1dea")
     a.decode()

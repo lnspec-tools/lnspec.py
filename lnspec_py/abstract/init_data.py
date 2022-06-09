@@ -1,10 +1,11 @@
 from ..fundamental.ints import u16Int
 from .tvl_Record import TVLRecord
 
-'''
+"""
 This class is for the Data section of Init Message 
 as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the-init-message
-'''
+"""
+
 
 class InitData:
     def __init__(self, raw) -> None:

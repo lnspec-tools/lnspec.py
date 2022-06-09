@@ -1,10 +1,11 @@
 import lnspec_py.fundamental.hex_Type as hex_Type
 
-'''
+"""
 Test for Hex type
 
 ChainHash: https://github.com/lightning/bolts/blob/master/00-introduction.md#glossary-and-terminology-guide
-'''
+"""
+
 
 def test_hexType():
     a = hex_Type.ChainHash(
