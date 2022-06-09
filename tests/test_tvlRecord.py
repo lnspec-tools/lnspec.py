@@ -1,17 +1,23 @@
 import pytest
 
-from lnspec_py.abstract.tlv_Record import TLVRecord
+from lnspec_py.abstract.tvl_Record import TVLRecord
 
+"""
+Test for TVL reader
+1. Pass raw message into TVLRecord Object
+2. Call decode
+3. Compare result types, lenghts with expected values
+"""
 
 def test_simple_good_case():
-    a = TLVRecord("0208deadbeef1badbeef03041bad1dea")
+    a = TVLRecord("0208deadbeef1badbeef03041bad1dea")
     a.decode()
     expected = [["02", "08", "0xdeadbeef1badbeef"], ["03", "04", "0x1bad1dea"]]
     for x in expected:
         assert x[0] in [str(i) for i in a.types]
         assert x[1] in [str(i) for i in a.lengths]
         assert x[2] in a.values
-    b = TLVRecord("0208deadbeef1badbeef03041bad1dea040401020304")
+    b = TVLRecord("0208deadbeef1badbeef03041bad1dea040401020304")
     b.decode()
     expected = [["02", "08", "0xdeadbeef1badbeef"], ["03", "04", "0x1bad1dea"]]
     for x in expected:
@@ -21,7 +27,7 @@ def test_simple_good_case():
 
 
 def test_short_read():
-    a = TLVRecord("01000208deadbeef1badbeef0308deadbeef")
+    a = TVLRecord("01000208deadbeef1badbeef0308deadbeef")
     with pytest.raises(Exception) as info:
         a.decode()
 
@@ -32,7 +38,7 @@ def test_types_out_of_order():
         "0208deadbeef1badbeef01000304deadbeef",
     ]
     for x in tests:
-        a = TLVRecord(x)
+        a = TVLRecord(x)
         with pytest.raises(Exception) as info:
             a.decode()
 
@@ -44,13 +50,13 @@ def test_req_type_missing_or_extra():
         "0304deadbeef0500",
     ]
     for x in tests:
-        a = TLVRecord(x)
+        a = TVLRecord(x)
         with pytest.raises(Exception) as info:
             a.decode()
 
 
 def test_decode2():
-    a = TLVRecord("0208deadbeef1badbeef03041bad1dea")
+    a = TVLRecord("0208deadbeef1badbeef03041bad1dea")
     a.decode()
     expected = [["02", "08", "0xdeadbeef1badbeef"], ["03", "04", "0x1bad1dea"]]
     for x in expected:

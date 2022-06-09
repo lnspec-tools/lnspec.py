@@ -3,6 +3,10 @@ from distutils.log import error
 import io
 from numpy import byte
 
+'''
+This module contain all the fundamental Ints types
+as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#fundamental-types
+'''
 
 class Integer(ABC):
     @abstractmethod

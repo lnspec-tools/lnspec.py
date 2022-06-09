@@ -96,7 +96,7 @@ def test_bigsizeInt_ERROR():
             assert expected_errors[i] in str(info)
 
 
-def test_bigsizeInt_encode():
+def test_bigsizeInt_ENCODE():
     encode_tests = [
         0,
         252,
