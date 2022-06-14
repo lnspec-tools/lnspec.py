@@ -9,14 +9,15 @@ as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the
 
 
 class InitData:
-    """ 
+    """
     The Data section of message init is encoded like
-    1. gflen - u16 
+    1. gflen - u16
     2. globalfeatures - gflen*byte
     3. flen - u16
     4. features - flen *byte
     5. tlvs - init_tlvs
     """
+
     def __init__(self, raw) -> None:
         self.raw = raw
 

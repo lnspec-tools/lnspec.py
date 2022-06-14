@@ -4,12 +4,13 @@ from ..abstract.init_data import InitData
 
 
 class InitMessage(message):
-    """ 
+    """
     The message init is encoded like
-    1. Types 
-    2. Data 
+    1. Types
+    2. Data
     3. tlv_stream
-   """
+    """
+
     def __init__(self, raw):
         self.raw = raw
 

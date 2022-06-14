@@ -65,16 +65,20 @@ def test_decode2():
         assert x[1] in [str(i) for i in a.lengths]
         assert x[2] in a.values
 
+
 def test_init_bolt1():
-    
-    testcases = ["010101", '01020100', '0103010000', '010401000000']
-    expected = [["01", "01", 1], ['01', '02', 256], ['01', '03', 65536], ['01','04', 16777216]]
+
+    testcases = ["010101", "01020100", "0103010000", "010401000000"]
+    expected = [
+        ["01", "01", 1],
+        ["01", "02", 256],
+        ["01", "03", 65536],
+        ["01", "04", 16777216],
+    ]
     for t in range(len(testcases)):
         a = TVLRecord(testcases[t])
         print(testcases[t])
         a.decode()
         assert expected[t][0] in [str(i) for i in a.types]
         assert expected[t][1] in [str(i) for i in a.lengths]
-        assert expected[t][2] in [int(i,16) for i in a.values]
-
-
+        assert expected[t][2] in [int(i, 16) for i in a.values]
