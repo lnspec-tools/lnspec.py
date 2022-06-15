@@ -1,6 +1,6 @@
-import pytest
-
 from lnspec_py.messagesTypes.Init_Msg import InitMessage
+from .utils import LNMessage
+from pyln.spec.bolt1 import bolt
 
 
 def test_simple_good_case():
@@ -9,3 +9,11 @@ def test_simple_good_case():
     assert a.type.val == 16
     assert "c9" in a.data.tvl_stream.types
     assert "cb" in a.data.tvl_stream.types
+
+
+def test_simple_init_message_integration_test():
+    msg = LNMessage("init", csv=bolt.csv, features=[], globalfeatures=[])
+    encode = InitMessage(msg.encode().hex())
+    encode.decode()
+    # type message with value 16 is the init message
+    assert encode.type.val == 16
