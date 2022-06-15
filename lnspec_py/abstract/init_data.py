@@ -1,5 +1,5 @@
 from ..fundamental.ints import u16Int
-from .tvl_Record import TVLRecord
+from .tvl_record import TVLRecord
 
 
 """
