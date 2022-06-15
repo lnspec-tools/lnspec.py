@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from distutils.log import error
 import io
-from numpy import byte
 
 """
 This module contain all the fundamental Ints types
