@@ -26,9 +26,7 @@ class u16Int(Integer):
 
     def decode(self):
         if type(self.val) == str:
-            print(self.val)
             self.val = bytes.fromhex(self.val)
-            print(self.val)
         self.val = int.from_bytes(self.val, "big")
 
 
@@ -40,6 +38,8 @@ class u32Int(Integer):
         self.val = int.to_bytes(self.val, 4, "big")
 
     def decode(self):
+        if type(self.val) == str:
+            self.val = bytes.fromhex(self.val)
         self.val = int.from_bytes(self.val, "big")
 
 
@@ -83,6 +83,7 @@ class bigsizeInt(Integer):
         self.val = val
 
     def decode(self):
+        print(self.val)
         if type(self.val) == bytes:
             self.val = self.val.hex()
         binary = bytes.fromhex(self.val)
@@ -116,6 +117,7 @@ class bigsizeInt(Integer):
             self.val = int.from_bytes(binary[1:9], "big")
 
     def encode(self):
+        print(self.val < 0x1000)
         if self.val < 0xFD:
             size = 1
             _type = None
