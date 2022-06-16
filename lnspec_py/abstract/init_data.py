@@ -29,11 +29,11 @@ class InitData:
         self.gflen = u16Int(self.raw[:4])
         self.gflen.decode()
         if self.gflen.val > 0:
-            length = len(self.raw[4 : 4 + (self.gflen.val*2)])
-            if length% 4 != 0:
-                tmp = '0' * abs(4-length) + self.raw[4 : 4+(self.gflen.val*2)]
+            length = len(self.raw[4 : 4 + (self.gflen.val * 2)])
+            if length % 4 != 0:
+                tmp = "0" * abs(4 - length) + self.raw[4 : 4 + (self.gflen.val * 2)]
             else:
-                tmp = self.raw[4 : 4 + (self.gflen.val*2)]
+                tmp = self.raw[4 : 4 + (self.gflen.val * 2)]
             self.globalFeatures = bigsizeInt(tmp)
             self.globalFeatures.decode()
         flenStart = 4 + (self.gflen.val * 2)
@@ -41,11 +41,14 @@ class InitData:
         self.flen = u16Int(self.raw[flenStart:flenEnd])
         self.flen.decode()
         if self.raw[flenEnd : flenEnd + self.flen.val]:
-            length = len(self.raw[flenEnd : flenEnd + (self.flen.val*2)])
-            if length% 4 != 0:
-                tmp = '0' * (length%4) + self.raw[flenEnd : flenEnd + (self.flen.val*2)]
+            length = len(self.raw[flenEnd : flenEnd + (self.flen.val * 2)])
+            if length % 4 != 0:
+                tmp = (
+                    "0" * (length % 4)
+                    + self.raw[flenEnd : flenEnd + (self.flen.val * 2)]
+                )
             else:
-                tmp = self.raw[flenEnd : flenEnd + (self.flen.val*2)]
+                tmp = self.raw[flenEnd : flenEnd + (self.flen.val * 2)]
             self.features = bigsizeInt(tmp)
             self.features.decode()
         self.tvl_stream = TVLRecord(self.raw[flenEnd + self.flen.val * 2 :])
@@ -55,19 +58,26 @@ class InitData:
         if self.gflen.val > 0:
             self.globalFeatures.encode()
             assert len(self.globalFeatures.val) == self.gflen.val
-            self.globalFeatures.val = str(self.globalFeatures.val.hex())[-self.gflen.val*2:]
+            self.globalFeatures.val = str(self.globalFeatures.val.hex())[
+                -self.gflen.val * 2 :
+            ]
         else:
-            self.globalFeatures.val = ''
+            self.globalFeatures.val = ""
         if self.flen.val > 0:
             self.features.encode()
             assert len(self.features.val) == self.flen.val
-            self.features.val = str(self.features.val.hex())[-self.flen.val*2:]
+            self.features.val = str(self.features.val.hex())[-self.flen.val * 2 :]
         else:
-            self.features.val = ''
+            self.features.val = ""
         self.tvl_stream.encode()
         self.gflen.encode()
         self.flen.encode()
         assert len(self.gflen.val) == 2
         assert len(self.flen.val) == 2
-        self.encoded = str(self.gflen.val.hex()) + self.globalFeatures.val + str(self.flen.val.hex()) + self.features.val + self.tvl_stream.encoded
-
+        self.encoded = (
+            str(self.gflen.val.hex())
+            + self.globalFeatures.val
+            + str(self.flen.val.hex())
+            + self.features.val
+            + self.tvl_stream.encoded
+        )

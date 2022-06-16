@@ -33,9 +33,14 @@ class TVLRecord:
             n += int(length, 16) * 2
 
     def encode(self):
-        res = ''
+        res = ""
         for x in range(len(self.types)):
-            res += str(bytes.fromhex(self.types[x]).hex()) + str(bytes.fromhex(self.lengths[x]).hex()) + str(bytes.fromhex(self.value[x]).hex())
+            res += (
+                str(bytes.fromhex(self.types[x]).hex())
+                + str(bytes.fromhex(self.lengths[x]).hex())
+                + str(bytes.fromhex(self.value[x]).hex())
+            )
         self.encoded = res
+
 
 # 00023fff0003ffffff init message eg
