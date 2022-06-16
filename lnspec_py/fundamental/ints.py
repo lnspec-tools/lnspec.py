@@ -2,7 +2,10 @@ from abc import ABC, abstractmethod
 from distutils.log import error
 import io
 
-from numpy import byte
+"""
+This module contain all the fundamental Ints types
+as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#fundamental-types
+"""
 
 
 class Integer(ABC):
@@ -14,7 +17,7 @@ class Integer(ABC):
         pass
 
 
-class u16Integer(Integer):
+class u16Int(Integer):
     def __init__(self, val):
         self.val = val
 
@@ -22,10 +25,14 @@ class u16Integer(Integer):
         self.val = int.to_bytes(self.val, 2, "big")
 
     def decode(self):
+        if type(self.val) == str:
+            print(self.val)
+            self.val = bytes.fromhex(self.val)
+            print(self.val)
         self.val = int.from_bytes(self.val, "big")
 
 
-class u32Integer(Integer):
+class u32Int(Integer):
     def __init__(self, val):
         self.val = val
 
@@ -36,7 +43,7 @@ class u32Integer(Integer):
         self.val = int.from_bytes(self.val, "big")
 
 
-class u64Integer(Integer):
+class u64Int(Integer):
     def __init__(self, val):
         self.val = val
 
@@ -47,7 +54,7 @@ class u64Integer(Integer):
         self.val = int.from_bytes(self.val, "big")
 
 
-class tu(Integer):
+class tuInt(Integer):
     def __init__(self, val):
         self.uintRange = [
             255,
@@ -71,7 +78,7 @@ class tu(Integer):
         self.val = int.from_bytes(self.val, "big")
 
 
-class bigsize(Integer):
+class bigsizeInt(Integer):
     def __init__(self, val):
         self.val = val
 
