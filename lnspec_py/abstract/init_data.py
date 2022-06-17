@@ -31,6 +31,7 @@ class InitData:
         if self.gflen.val > 0:
             length = len(self.raw[4 : 4 + (self.gflen.val * 2)])
             if length % 4 != 0:
+                # here we pad 0s in the beginning due to the fact bytes.fromHex() only take in hex string which len%4 == 0
                 tmp = "0" * abs(4 - length) + self.raw[4 : 4 + (self.gflen.val * 2)]
             else:
                 tmp = self.raw[4 : 4 + (self.gflen.val * 2)]
@@ -58,10 +59,12 @@ class InitData:
         if self.gflen.val > 0:
             self.globalFeatures.encode()
             assert len(self.globalFeatures.val) == self.gflen.val
+            # There are 2 hex number in a bytes and since we assume the input string is hex that's why glen.val * 2
             self.globalFeatures.val = str(self.globalFeatures.val.hex())[
                 -self.gflen.val * 2 :
             ]
         else:
+            # make globalFeatues empty if gflen is 0
             self.globalFeatures.val = ""
         if self.flen.val > 0:
             self.features.encode()
