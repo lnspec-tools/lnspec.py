@@ -12,8 +12,9 @@ def test_simple_good_case():
 
 
 def test_simple_init_message_integration_test():
-    msg = LNMessage("init", csv=bolt.csv, features=[5, 1], globalfeatures=[5, 1])
+    msg = LNMessage("init", csv=bolt.csv, features=[1, 2, 3, 4, 5], globalfeatures=[9, 2, 1, 2, 3, 4, 5])
     encode = InitMessage(str(msg.encode().hex()))
+    print(str(msg.encode().hex()))
     encode.decode()
     # type message with value 16 is the init message
     assert encode.type.val == 16

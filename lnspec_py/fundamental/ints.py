@@ -83,6 +83,7 @@ class bigsizeInt(Integer):
         self.val = val
 
     def decode(self):
+        print(self.val)
         if type(self.val) == bytes:
             self.val = self.val.hex()
         binary = bytes.fromhex(self.val)
@@ -116,6 +117,7 @@ class bigsizeInt(Integer):
             self.val = int.from_bytes(binary[1:9], "big")
 
     def encode(self):
+        print(self.val < 0x1000)
         if self.val < 0xFD:
             size = 1
             _type = None
