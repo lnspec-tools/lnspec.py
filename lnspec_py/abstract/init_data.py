@@ -63,7 +63,9 @@ class InitData:
             self.globalFeatures.encode()
             if len(self.globalFeatures.val) > 1:
                 assert (
-                    len(self.globalFeatures.val) - (len(self.globalFeatures.val) - self.gflen.val) == self.gflen.val
+                    len(self.globalFeatures.val)
+                    - (len(self.globalFeatures.val) - self.gflen.val)
+                    == self.gflen.val
                     == self.gflen.val
                 )
             else:
@@ -80,7 +82,10 @@ class InitData:
             print(self.features.val)
             print(self.flen.val, "hi")
             if len(self.features.val) > 1:
-                assert len(self.features.val) - (len(self.features.val) - self.flen.val) == self.flen.val
+                assert (
+                    len(self.features.val) - (len(self.features.val) - self.flen.val)
+                    == self.flen.val
+                )
             else:
                 assert len(self.features.val) == self.flen.val
             # we need to remove the 0 padding in front
