@@ -15,8 +15,8 @@ def test_simple_init_message_integration_test():
     msg = LNMessage(
         "init",
         csv=bolt.csv,
-        features=[1, 2, 3, 4, 5],
-        globalfeatures=[9, 2, 1, 2, 3, 4, 5],
+        features=[1, 2, 3],
+        globalfeatures=[1],
     )
     encode = InitMessage(str(msg.encode().hex()))
     print(str(msg.encode().hex()))
