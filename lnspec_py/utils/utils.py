@@ -44,7 +44,11 @@ def int_to_bitfield(n):
 
 
 def bitfield_to_int(n):
-    return sum([2**i if digit else 0 for i, digit in enumerate(n[::-1])])
+    tmp = [0 for _ in range(32)]
+    for x in n:
+        tmp[x] = 1
+    n = tmp
+    return sum([2**i if digit else 0 for i, digit in enumerate(n)])
 
 
 def pad_zero_Hex(n):
