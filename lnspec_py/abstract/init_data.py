@@ -37,8 +37,13 @@ class InitData:
         if self.gflen.val > 0:
             tmp = self.raw[4 : 4 + (self.gflen.val * 2)]
             tmp = int(tmp, 16)
-            self.globalFeatures = int_to_bitfield(tmp)
-            assert len(self.globalFeatures) // 8 == self.gflen.val
+            self.globalFeatures = int_to_bitfield(tmp)[::-1]
+            self.globalFeatures = [
+                i
+                for i in range(len(self.globalFeatures))
+                if self.globalFeatures[i] != 0
+            ]
+            # assert len(self.globalFeatures) // 8 == self.gflen.val
 
         # Get the start index of feln by getting end position of global features
         flenStart = 4 + (self.gflen.val * 2)
@@ -53,8 +58,11 @@ class InitData:
         if self.flen.val > 0:
             tmp = self.raw[flenEnd : flenEnd + (self.flen.val * 2)]
             tmp = int(tmp, 16)
-            self.features = int_to_bitfield(tmp)
-            assert len(self.features) // 8 == self.flen.val
+            self.features = int_to_bitfield(tmp)[::-1]
+            self.features = [
+                i for i in range(len(self.features)) if self.features[i] != 0
+            ]
+            # assert len(self.features) // 8 == self.flen.val
         self.tvl_stream = TVLRecord(self.raw[flenEnd + self.flen.val * 2 :])
         self.tvl_stream.decode()
 
@@ -69,8 +77,9 @@ class InitData:
             self.globalFeatures = bytes.fromhex(
                 pad_zero_Hex(hex(self.globalFeatures)[2:])
             ).hex()
-            assert len(self.globalFeatures) / 2 == self.gflen.val
-
+            # assert len(self.globalFeatures) / 2 == self.gflen.val
+        else:
+            self.globalFeatures = ""
         # Here we check if flen value > 0
         # if yes, then we convert global features back to hex str
         # first we convert bitfield to decimal int
@@ -79,8 +88,9 @@ class InitData:
         if self.flen.val > 0:
             self.features = bitfield_to_int(self.features)
             self.features = bytes.fromhex(pad_zero_Hex(hex(self.features)[2:])).hex()
-            assert len(self.features) / 2 == self.flen.val
-
+            # assert len(self.features) / 2 == self.flen.val
+        else:
+            self.features = ""
         self.tvl_stream.encode()
         self.gflen.encode()
         self.flen.encode()
@@ -88,8 +98,8 @@ class InitData:
         assert len(self.flen.val) == 2
         return (
             self.gflen.val.hex()
-            + Bitfield.encode(self.globalFeatures)
+            + self.globalFeatures
             + self.flen.val.hex()
-            + Bitfield.encode(self.features)
+            + self.features
             + self.tvl_stream.encoded
         )
