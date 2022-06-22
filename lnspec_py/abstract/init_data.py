@@ -1,17 +1,14 @@
-from pyexpat import features
+"""
+This class is for the Data section of Init Message
+as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the-init-message
+"""
 from ..fundamental.ints import u16Int, bigsizeInt
 from .tvl_record import TVLRecord
 from ..utils.utils import (
     int_to_bitfield,
     bitfield_to_int,
     pad_zero_Hex,
-    remove_leading_zero,
 )
-
-"""
-This class is for the Data section of Init Message 
-as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the-init-message
-"""
 
 
 class InitData:
@@ -27,8 +24,8 @@ class InitData:
     def __init__(self, raw) -> None:
         self.raw = raw
         self.encoded = None
-        self.globalFeatures = None
-        self.features = None
+        self.globalFeatures = ""
+        self.features = ""
 
     def decode(self):
         self.gflen = u16Int(self.raw[:4])
@@ -91,7 +88,7 @@ class InitData:
         self.flen.encode()
         assert len(self.gflen.val) == 2
         assert len(self.flen.val) == 2
-        self.encoded = (
+        return (
             str(self.gflen.val.hex())
             + self.globalFeatures
             + str(self.flen.val.hex())
