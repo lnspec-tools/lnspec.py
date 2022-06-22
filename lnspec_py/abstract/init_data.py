@@ -3,6 +3,7 @@ This class is for the Data section of Init Message
 as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the-init-message
 """
 from ..fundamental.ints import u16Int, bigsizeInt
+from lnspec_py.basic_type.bitmask import Bitfield
 from .tvl_record import TVLRecord
 from ..utils.utils import (
     int_to_bitfield,
@@ -24,8 +25,8 @@ class InitData:
     def __init__(self, raw) -> None:
         self.raw = raw
         self.encoded = None
-        self.globalFeatures = ""
-        self.features = ""
+        self.globalFeatures = []
+        self.features = []
 
     def decode(self):
         self.gflen = u16Int(self.raw[:4])
@@ -69,9 +70,7 @@ class InitData:
                 pad_zero_Hex(hex(self.globalFeatures)[2:])
             ).hex()
             assert len(self.globalFeatures) / 2 == self.gflen.val
-        else:
-            # make globalFeatues empty if gflen is 0
-            self.globalFeatures = ""
+
         # Here we check if flen value > 0
         # if yes, then we convert global features back to hex str
         # first we convert bitfield to decimal int
@@ -81,17 +80,16 @@ class InitData:
             self.features = bitfield_to_int(self.features)
             self.features = bytes.fromhex(pad_zero_Hex(hex(self.features)[2:])).hex()
             assert len(self.features) / 2 == self.flen.val
-        else:
-            self.features.val = ""
+
         self.tvl_stream.encode()
         self.gflen.encode()
         self.flen.encode()
         assert len(self.gflen.val) == 2
         assert len(self.flen.val) == 2
         return (
-            str(self.gflen.val.hex())
-            + self.globalFeatures
-            + str(self.flen.val.hex())
-            + self.features
+            self.gflen.val.hex()
+            + Bitfield.encode(self.globalFeatures)
+            + self.flen.val.hex()
+            + Bitfield.encode(self.features)
             + self.tvl_stream.encoded
         )
