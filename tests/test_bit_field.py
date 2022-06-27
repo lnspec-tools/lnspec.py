@@ -29,6 +29,7 @@ def test_bitfiled_decoding_complex():
     decoded_bitfield.sort()
     assert expected_bitfield == decoded_bitfield
 
+
 def test_bitfield_decoding_from_hex():
     expected_bitfield = [7, 12]
     hex_bitfield = bitfield(7, 12)
