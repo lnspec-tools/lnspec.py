@@ -12,7 +12,7 @@ fmt:
 	$(PYTHON) run $(FMT) .
 
 check:
-	$(PYTHON) run pytest tests
+	$(PYTHON) run pytest tests --log-cli-level=DEBUG
 
 env:
 	$(PYTHON) shell
