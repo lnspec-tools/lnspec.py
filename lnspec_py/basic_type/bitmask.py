@@ -26,6 +26,7 @@ to most-significant positions.
 
  author: https://github.com/vincenzopalazzo
 """
+import logging
 from typing import List
 
 
@@ -47,11 +48,11 @@ class Bitfield:
 
     @staticmethod
     def decode(hex_str: str) -> List[int]:
-        bitfield = bytearray.fromhex(hex_str) * 8
-        max_len = len(bitfield)
+        bitfield = bytearray.fromhex(hex_str)
+        max_len = len(bitfield) * 8
         feature = []
         for idx in range(0, max_len):
             # has filed
-            if (bitfield[max_len // 8 - 1 - idx // 8] & (1 << idx)) != 0:
+            if (bitfield[max_len // 8 - 1 - idx // 8] & (1 << (idx % 8))) != 0:
                 feature.append(idx)
         return feature
