@@ -7,8 +7,7 @@ from pyln.spec.bolt1 import bolt
 
 
 def test_simple_good_case():
-    a = InitMessage("001000000000c9012acb0104")
-    a.decode()
+    a = InitMessage.decode("001000000000c9012acb0104")
     assert a.type.val == 16
     assert "c9" in a.data.tvl_stream.types
     assert "cb" in a.data.tvl_stream.types
@@ -22,11 +21,10 @@ def test_simple_init_message_integration_test_simple():
         features="",
     )
     assert str(msg.encode().hex()) == msg.encode().hex()
-    init_msg = InitMessage(msg.encode().hex())
-    init_msg.decode()
+    init_msg = InitMessage.decode(raw_msg=msg.encode().hex())
     # type message with value 16 is the init message
     assert init_msg.type.val == 16
-    assert init_msg.data.globalFeatures == []
+    assert init_msg.data.global_features == []
     assert init_msg.data.features == []
     assert init_msg.encode() == msg.encode().hex()
 
@@ -39,11 +37,10 @@ def test_simple_init_message_integration_test_feature():
         features=bitfield(12, 20, 29),
     )
     assert str(msg.encode().hex()) == msg.encode().hex()
-    init_msg = InitMessage(msg.encode().hex())
-    init_msg.decode()
+    init_msg = InitMessage.decode(raw_msg=msg.encode().hex())
     # type message with value 16 is the init message
     assert init_msg.type.val == 16
-    assert init_msg.data.globalFeatures == []
+    assert init_msg.data.global_features == []
     init_msg.data.features.sort()
     assert init_msg.data.features == [12, 20, 29]
     assert Bitfield.encode(init_msg.data.features) == bitfield(12, 20, 29)
@@ -58,13 +55,13 @@ def test_simple_init_message_integration_test_global_feature():
         features="",
     )
     assert str(msg.encode().hex()) == msg.encode().hex()
-    init_msg = InitMessage(msg.encode().hex())
-    init_msg.decode()
+    init_msg = InitMessage.decode(raw_msg=msg.encode().hex())
+
     # type message with value 16 is the init message
     assert init_msg.type.val == 16
     assert init_msg.data.features == []
-    init_msg.data.globalFeatures.sort()
+    init_msg.data.global_features.sort()
     logging.debug(f"expected gloabl feature hex: {bitfield(12, 20, 29)}")
-    assert init_msg.data.globalFeatures == [12, 20, 29]
-    assert Bitfield.encode(init_msg.data.globalFeatures) == bitfield(12, 20, 29)
+    assert init_msg.data.global_features == [12, 20, 29]
+    assert Bitfield.encode(init_msg.data.global_features) == bitfield(12, 20, 29)
     assert init_msg.encode() == msg.encode().hex()

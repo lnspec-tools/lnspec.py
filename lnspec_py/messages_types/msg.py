@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
 
 
-class message(ABC):
+class Message(ABC):
     @abstractmethod
     def encode(self):
         pass
 
-    def decode(self):
+    @classmethod
+    def decode(raw_msg: str):
         pass
