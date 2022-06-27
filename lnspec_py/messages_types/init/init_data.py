@@ -4,9 +4,9 @@ as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the
 """
 import logging
 from typing import List
-from lnspec_py.fundamental.ints import u16Int
+from lnspec_py.basic_type.ints import u16Int
 from lnspec_py.basic_type.bitmask import Bitfield
-from lnspec_py.abstract.tvl_record import TVLRecord
+from lnspec_py.messages_types.tvl_record import TVLRecord
 
 
 class InitData:

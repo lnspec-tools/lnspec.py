@@ -18,4 +18,4 @@ env:
 	$(PYTHON) shell
 
 clean:
-	rm -rf .venv **/__p*
+	rm -rf .venv **/__p* .py* **/**/__p*
