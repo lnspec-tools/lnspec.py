@@ -64,6 +64,7 @@ def test_simple_init_message_integration_test_global_feature():
     assert init_msg.type.val == 16
     assert init_msg.data.features == []
     init_msg.data.globalFeatures.sort()
+    logging.debug(f"expected gloabl feature hex: {bitfield(12, 20, 29)}")
     assert init_msg.data.globalFeatures == [12, 20, 29]
     assert Bitfield.encode(init_msg.data.globalFeatures) == bitfield(12, 20, 29)
     assert init_msg.encode() == msg.encode().hex()

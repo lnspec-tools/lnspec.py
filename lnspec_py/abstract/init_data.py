@@ -2,6 +2,7 @@
 This class is for the Data section of Init Message
 as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the-init-message
 """
+import logging
 from ..fundamental.ints import u16Int, bigsizeInt
 from lnspec_py.basic_type.bitmask import Bitfield
 from .tvl_record import TVLRecord
@@ -37,14 +38,8 @@ class InitData:
         # finally we assert if the size of globalfeatures is equal to the size specify in gflen
         if self.gflen.val > 0:
             tmp = self.raw[4 : 4 + (self.gflen.val * 2)]
-            tmp = int(tmp, 16)
-            # after we got the result from int_to_bitfield we need to reverse it, as the returned bitfield are reversed
-            self.globalFeatures = int_to_bitfield(tmp)[::-1]
-            self.globalFeatures = [
-                i
-                for i in range(len(self.globalFeatures))
-                if self.globalFeatures[i] != 0
-            ]
+            logging.debug(f"global feature hex {tmp}")
+            self.globalFeatures = Bitfield.decode(tmp)
 
         # Get the start index of feln by getting end position of global features
         flenStart = 4 + (self.gflen.val * 2)
@@ -71,23 +66,17 @@ class InitData:
         # if yes, then we convert global features back to hex str
         # first we convert bitfield to decimal int
         # then we pad 0s in front if len(str)%2 != 0
+        global_features = ""
         if self.gflen.val > 0:
-            self.globalFeatures = bitfield_to_int(self.globalFeatures)
-            self.globalFeatures = bytes.fromhex(
-                pad_zero_Hex(hex(self.globalFeatures)[2:])
-            ).hex()
-        else:
-            # if gflen value is 0 then globalFeatures is empty
-            self.globalFeatures = ""
+            global_features = Bitfield.encode(self.globalFeatures)
         # Here we check if flen value > 0
         # if yes, then we convert global features back to hex str
         # first we convert bitfield to decimal int
         # then we pad 0s in front if len(str)%2 != 0
+        features = ""
         if self.flen.val > 0:
-            self.features = bitfield_to_int(self.features)
-            self.features = bytes.fromhex(pad_zero_Hex(hex(self.features)[2:])).hex()
-        else:
-            self.features = ""
+            features = Bitfield.encode(self.features)
+
         self.tvl_stream.encode()
         self.gflen.encode()
         self.flen.encode()
@@ -95,8 +84,8 @@ class InitData:
         assert len(self.flen.val) == 2
         return (
             self.gflen.val.hex()
-            + self.globalFeatures
+            + global_features
             + self.flen.val.hex()
-            + self.features
+            + features
             + self.tvl_stream.encoded
         )
