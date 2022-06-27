@@ -1,6 +1,6 @@
 import pytest
 
-from lnspec_py.messages_types.tvl_record import TVLRecord
+from lnspec_py.basic_type.tvl_record import TVLRecord
 
 """
 Test for TVL reader
