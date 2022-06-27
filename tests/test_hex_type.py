@@ -1,4 +1,4 @@
-import lnspec_py.fundamental.hex_type as hex_type
+import lnspec_py.basic_type.hex_type as hex_type
 
 """
 Test for Hex type

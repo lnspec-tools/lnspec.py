@@ -1,6 +1,6 @@
 import sys
 import pytest
-import lnspec_py.fundamental.ints as Integers
+import lnspec_py.basic_type.ints as Integers
 
 
 def test_u16Int():
