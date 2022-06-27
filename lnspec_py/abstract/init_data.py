@@ -29,6 +29,7 @@ class InitData:
         self.features = []
 
     def decode(self):
+        # 2 hex == 1 byte so that's why we have 4 hex digit as there are 2 bytes in u16Int
         self.gflen = u16Int(self.raw[:4])
         self.gflen.decode()
         # if glen > 0, it mean global features field is not empty
@@ -37,13 +38,13 @@ class InitData:
         if self.gflen.val > 0:
             tmp = self.raw[4 : 4 + (self.gflen.val * 2)]
             tmp = int(tmp, 16)
+            # after we got the result from int_to_bitfield we need to reverse it, as the returned bitfield are reversed
             self.globalFeatures = int_to_bitfield(tmp)[::-1]
             self.globalFeatures = [
                 i
                 for i in range(len(self.globalFeatures))
                 if self.globalFeatures[i] != 0
             ]
-            # assert len(self.globalFeatures) // 8 == self.gflen.val
 
         # Get the start index of feln by getting end position of global features
         flenStart = 4 + (self.gflen.val * 2)
@@ -53,8 +54,8 @@ class InitData:
         self.flen = u16Int(self.raw[flenStart:flenEnd])
         self.flen.decode()
         # if flen > 0, it mean features field is not empty
-        # first convert raw hex str to int, then convert it to bitfield and
-        # finally we assert if the size of features is equal to the size specify in flen
+        # first convert raw hex str to int, then convert it to bitfield
+        # where value indicate the index of bit is on or off
         if self.flen.val > 0:
             tmp = self.raw[flenEnd : flenEnd + (self.flen.val * 2)]
             tmp = int(tmp, 16)
@@ -62,7 +63,6 @@ class InitData:
             self.features = [
                 i for i in range(len(self.features)) if self.features[i] != 0
             ]
-            # assert len(self.features) // 8 == self.flen.val
         self.tvl_stream = TVLRecord(self.raw[flenEnd + self.flen.val * 2 :])
         self.tvl_stream.decode()
 
@@ -71,24 +71,21 @@ class InitData:
         # if yes, then we convert global features back to hex str
         # first we convert bitfield to decimal int
         # then we pad 0s in front if len(str)%2 != 0
-        # finally we assert the len(str) / 2 == gflen.val
         if self.gflen.val > 0:
             self.globalFeatures = bitfield_to_int(self.globalFeatures)
             self.globalFeatures = bytes.fromhex(
                 pad_zero_Hex(hex(self.globalFeatures)[2:])
             ).hex()
-            # assert len(self.globalFeatures) / 2 == self.gflen.val
         else:
+            # if gflen value is 0 then globalFeatures is empty
             self.globalFeatures = ""
         # Here we check if flen value > 0
         # if yes, then we convert global features back to hex str
         # first we convert bitfield to decimal int
         # then we pad 0s in front if len(str)%2 != 0
-        # finally we assert the len(str) / 2 == flen.val
         if self.flen.val > 0:
             self.features = bitfield_to_int(self.features)
             self.features = bytes.fromhex(pad_zero_Hex(hex(self.features)[2:])).hex()
-            # assert len(self.features) / 2 == self.flen.val
         else:
             self.features = ""
         self.tvl_stream.encode()

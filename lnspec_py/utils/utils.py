@@ -36,28 +36,28 @@ def bitfield(*args: int) -> str:
     return bfield.hex()
 
 
-def int_to_bitfield(n):
+def int_to_bitfield(n: int) -> list:
     a = [int(digit) for digit in bin(n)[2:]]
     if len(a) % 8 != 0:
         a = [0] * (8 - len(a) % 8) + a
     return a
 
 
-def bitfield_to_int(n):
-    tmp = [0 for _ in range(32)]
-    for x in n:
-        tmp[x] = 1
-    n = tmp
-    return sum([2**i if digit else 0 for i, digit in enumerate(n)])
+def bitfield_to_int(n: list) -> int:
+    # convert the index of set bits to integer
+    # input should be something like this [2, 3] where 2 & 3 indicate index 2 & 3 is set to 1 == 1100
+    # output is a integer
+    # return sum (2**i) where i is the set index
+    return sum([2**i for i in n])
 
 
-def pad_zero_Hex(n):
+def pad_zero_Hex(n: str) -> str:
     if len(n) % 2 != 0:
         return ("0" * (2 - (len(n) % 2))) + n
     return n
 
 
-def remove_leading_zero(n):
+def remove_leading_zero(n: str) -> str:
     try:
         while n[0] == "0":
             n = n[1:]
