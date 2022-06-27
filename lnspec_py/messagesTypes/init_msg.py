@@ -17,7 +17,7 @@ class InitMessage(message):
         self.raw = raw
 
     def decode(self):
-        logging.info(f"Int message hex type: {self.raw[:4]}")
+        logging.debug(f"Int message hex type: {self.raw[:4]}")
         self.type = u16Int(self.raw[:4])
         self.type.decode()
         logging.debug(f"Init message hex data: {self.raw[4:]}")
