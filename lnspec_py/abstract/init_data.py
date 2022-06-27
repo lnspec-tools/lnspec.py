@@ -6,11 +6,6 @@ import logging
 from ..fundamental.ints import u16Int, bigsizeInt
 from lnspec_py.basic_type.bitmask import Bitfield
 from .tvl_record import TVLRecord
-from ..utils.utils import (
-    int_to_bitfield,
-    bitfield_to_int,
-    pad_zero_Hex,
-)
 
 
 class InitData:
@@ -53,11 +48,7 @@ class InitData:
         # where value indicate the index of bit is on or off
         if self.flen.val > 0:
             tmp = self.raw[flenEnd : flenEnd + (self.flen.val * 2)]
-            tmp = int(tmp, 16)
-            self.features = int_to_bitfield(tmp)[::-1]
-            self.features = [
-                i for i in range(len(self.features)) if self.features[i] != 0
-            ]
+            self.features = Bitfield.decode(tmp)
         self.tvl_stream = TVLRecord(self.raw[flenEnd + self.flen.val * 2 :])
         self.tvl_stream.decode()
 
