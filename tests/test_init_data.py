@@ -1,6 +1,6 @@
 import logging
 
-from lnspec_py.messagesTypes.init_msg import InitMessage
+from lnspec_py.messages_types.init_msg import InitMessage
 from lnspec_py.basic_type.bitmask import Bitfield
 from .utils import LNMessage, bitfield
 from pyln.spec.bolt1 import bolt
