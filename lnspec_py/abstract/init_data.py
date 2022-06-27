@@ -3,6 +3,8 @@ This class is for the Data section of Init Message
 as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the-init-message
 """
 import logging
+from pyexpat import features
+from typing import List
 from ..fundamental.ints import u16Int, bigsizeInt
 from lnspec_py.basic_type.bitmask import Bitfield
 from .tvl_record import TVLRecord
@@ -18,54 +20,76 @@ class InitData:
     5. tlvs - init_tlvs
     """
 
-    def __init__(self, raw) -> None:
-        self.raw = raw
-        self.encoded = None
-        self.globalFeatures = []
-        self.features = []
+    def __init__(
+        self,
+        gflen: u16Int,
+        global_features: List[int],
+        flen: u16Int,
+        features: List[int],
+        tvl_stream: TVLRecord,
+    ) -> None:
+        self.name = "init"
+        self.gflen = gflen
+        self.global_features = global_features
+        self.flen = flen
+        self.features = features
+        self.tvl_stream = tvl_stream
 
-    def decode(self):
-        # 2 hex == 1 byte so that's why we have 4 hex digit as there are 2 bytes in u16Int
-        self.gflen = u16Int(self.raw[:4])
-        self.gflen.decode()
+    @staticmethod
+    def decode(raw_msg: str) -> "InitData":
+        """
+        Decode the init message data from a raw hex message message
+        """
+        # Take the first 4 hex digit (are 2 bytes) to decode the size f the global feature encoding
+        gflen = u16Int(raw_msg[:4])
+        gflen.decode()
         # if glen > 0, it mean global features field is not empty
         # first convert raw hex str to int, then convert it to bitfield and
         # finally we assert if the size of globalfeatures is equal to the size specify in gflen
-        if self.gflen.val > 0:
-            tmp = self.raw[4 : 4 + (self.gflen.val * 2)]
+        global_features = []
+        if gflen.val > 0:
+            tmp = raw_msg[4 : 4 + (gflen.val * 2)]
             logging.debug(f"global feature hex {tmp}")
-            self.globalFeatures = Bitfield.decode(tmp)
+            global_features = Bitfield.decode(tmp)
 
         # Get the start index of feln by getting end position of global features
-        flenStart = 4 + (self.gflen.val * 2)
+        flenStart = 4 + (gflen.val * 2)
         # Get the end index of flen by adding 8 as u16 is 2 bytes and there is 4 hex digit in 2 bytes
-        flenEnd = (self.gflen.val * 2) + 8
+        flenEnd = (gflen.val * 2) + 8
         # get the raw msg part of flen
-        self.flen = u16Int(self.raw[flenStart:flenEnd])
-        self.flen.decode()
+        flen = u16Int(raw_msg[flenStart:flenEnd])
+        flen.decode()
         # if flen > 0, it mean features field is not empty
         # first convert raw hex str to int, then convert it to bitfield
         # where value indicate the index of bit is on or off
-        if self.flen.val > 0:
-            tmp = self.raw[flenEnd : flenEnd + (self.flen.val * 2)]
-            self.features = Bitfield.decode(tmp)
-        self.tvl_stream = TVLRecord(self.raw[flenEnd + self.flen.val * 2 :])
-        self.tvl_stream.decode()
+        features = []
+        if flen.val > 0:
+            tmp = raw_msg[flenEnd : flenEnd + (flen.val * 2)]
+            features = Bitfield.decode(tmp)
+        tvl_stream = TVLRecord(raw_msg[flenEnd + flen.val * 2 :])
+        tvl_stream.decode()
+        return InitData(
+            gflen=gflen,
+            global_features=global_features,
+            flen=flen,
+            features=features,
+            tvl_stream=tvl_stream,
+        )
 
-    def encode(self):
+    def encode(self) -> str:
         # Here we check if glfen value > 0
         # if yes, then we convert global features back to hex str
         # first we convert bitfield to decimal int
         # then we pad 0s in front if len(str)%2 != 0
         global_features = ""
-        if self.gflen.val > 0:
-            global_features = Bitfield.encode(self.globalFeatures)
+        if len(self.global_features) > 0:
+            global_features = Bitfield.encode(self.global_features)
         # Here we check if flen value > 0
         # if yes, then we convert global features back to hex str
         # first we convert bitfield to decimal int
         # then we pad 0s in front if len(str)%2 != 0
         features = ""
-        if self.flen.val > 0:
+        if len(self.features) > 0:
             features = Bitfield.encode(self.features)
 
         self.tvl_stream.encode()
