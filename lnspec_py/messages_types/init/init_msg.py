@@ -1,8 +1,8 @@
 import logging
 
-from .msg import Message
-from ..fundamental.ints import u16Int
-from ..abstract.init_data import InitData
+from lnspec_py.messages_types.msg import Message
+from lnspec_py.fundamental.ints import u16Int
+from lnspec_py.messages_types.init.init_data import InitData
 
 
 class InitMessage(Message):

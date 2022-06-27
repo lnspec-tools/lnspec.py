@@ -3,11 +3,10 @@ This class is for the Data section of Init Message
 as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the-init-message
 """
 import logging
-from pyexpat import features
 from typing import List
-from ..fundamental.ints import u16Int, bigsizeInt
+from lnspec_py.fundamental.ints import u16Int
 from lnspec_py.basic_type.bitmask import Bitfield
-from .tvl_record import TVLRecord
+from lnspec_py.abstract.tvl_record import TVLRecord
 
 
 class InitData:
