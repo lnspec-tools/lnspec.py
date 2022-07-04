@@ -65,3 +65,25 @@ def test_simple_init_message_integration_test_global_feature():
     assert init_msg.data.global_features == [12, 20, 29]
     assert Bitfield.encode(init_msg.data.global_features) == bitfield(12, 20, 29)
     assert init_msg.encode() == msg.encode().hex()
+
+
+def test_simple_init_message_integration_test_both_feature():
+    msg = LNMessage(
+        "init",
+        csv=bolt.csv,
+        globalfeatures=bitfield(12, 20, 29),
+        features=bitfield(12, 20, 29),
+    )
+    assert str(msg.encode().hex()) == msg.encode().hex()
+    init_msg = InitMessage.decode(raw_msg=msg.encode().hex())
+
+    # type message with value 16 is the init message
+    assert init_msg.type.val == 16
+    init_msg.data.global_features.sort()
+    logging.debug(f"expected gloabl feature hex: {bitfield(12, 20, 29)}")
+    assert init_msg.data.global_features == [12, 20, 29]
+    assert Bitfield.encode(init_msg.data.global_features) == bitfield(12, 20, 29)
+    assert init_msg.encode() == msg.encode().hex()
+    init_msg.data.features.sort()
+    assert init_msg.data.features == [12, 20, 29]
+    assert Bitfield.encode(init_msg.data.features) == bitfield(12, 20, 29)
