@@ -15,7 +15,7 @@ class ChainHash(HexType):
     pass
 
 
-class channel_id(HexType):
+class ChannelId(HexType):
     pass
 
 
