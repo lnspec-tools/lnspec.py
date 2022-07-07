@@ -1,6 +1,6 @@
 """
 This class is for the Data section of Init Message
-as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the-init-message
+as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the-error-and-warning-messages
 """
 
 import logging
@@ -13,7 +13,7 @@ from lnspec_py.message_type.msg import Message
 
 class ErrorMessage(Message):
     """
-    The Data section of message ERROR is encoded like
+    The message ERROR is encoded like
     1. [channel_id:channel_id]
     2. [u16:len]
     3. [len*byte:data]
