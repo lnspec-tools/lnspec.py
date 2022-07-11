@@ -54,6 +54,8 @@ class ErrorMessage(Message):
         data = ""
         if len(self.data) > 0:
             data = Bitfield.encode(self.data)
+            if len(data) < self.len.val * 2:
+                data = "0" * (self.len.val * 2 - len(data)) + data
         self.msg_type.encode()
         self.channel_id.encode()
         self.len.encode()
