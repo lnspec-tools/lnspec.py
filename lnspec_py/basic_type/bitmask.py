@@ -26,8 +26,24 @@ to most-significant positions.
 
  author: https://github.com/vincenzopalazzo
 """
+from dataclasses import dataclass
 import logging
-from typing import List
+from typing import List, Tuple
+
+from lnspec_py.basic_type.int import u16Int
+
+
+@dataclass
+class BitfieldData:
+    """
+    BitfiledData data class to store the result of the enconding
+    to avoid use more than a single tuople, returning two value at
+    the same time is more than enought
+    """
+
+    def __init__(self, bitfiled: List[int], size: u16Int) -> None:
+        self.bitfiled = bitfiled
+        self.size = size
 
 
 class Bitfield:
@@ -56,3 +72,25 @@ class Bitfield:
             if (bitfield[max_len // 8 - 1 - idx // 8] & (1 << (idx % 8))) != 0:
                 feature.append(idx)
         return feature
+
+    @staticmethod
+    def decode_with_len(hex_str: str) -> Tuple[BitfieldData, str]:
+        """
+        Deconding the bitfiled included the size of it by consuming the
+        input buffer.
+
+        params: hex_str the input hex string of the message
+        return: A touble compose by (BitfiledData, remains buffer)
+        """
+        # Take the first 4 hex digit (are 2 bytes) to decode the size f the array
+        size_buf = hex_str[:4]
+        hex_str = hex_str[4:]
+        lenght = u16Int(size_buf).decode()
+        if lenght.val == 0:
+            return (BitfieldData(bitfiled=[], size=lenght), hex_str)
+        bitfiled_buff = hex_str[: (lenght.val * 2)]
+        logging.debug(f"bitfiled hex {bitfiled_buff}")
+        bitfiled = Bitfield.decode(bitfiled_buff)
+        hex_str = hex_str[(lenght.val * 2) :]
+        logging.info(f"Size array inside {len(hex_str)}")
+        return (BitfieldData(bitfiled=bitfiled, size=lenght), hex_str)
