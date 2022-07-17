@@ -42,30 +42,24 @@ class InitData:
         # Take the first 4 hex digit (are 2 bytes) to decode the size f the global feature encoding
         gflen = u16Int(raw_msg[:4])
         gflen.decode()
+        raw_msg = raw_msg[4:]
         # if glen > 0, it mean global features field is not empty
         # first convert raw hex str to int, then convert it to bitfield and
         # finally we assert if the size of globalfeatures is equal to the size specify in gflen
         global_features = []
-        if gflen.val > 0:
-            tmp = raw_msg[4 : 4 + (gflen.val * 2)]
-            logging.debug(f"global feature hex {tmp}")
-            global_features = Bitfield.decode(tmp)
-
-        # Get the start index of feln by getting end position of global features
-        flenStart = 4 + (gflen.val * 2)
-        # Get the end index of flen by adding 8 as u16 is 2 bytes and there is 4 hex digit in 2 bytes
-        flenEnd = (gflen.val * 2) + 8
+        tmp = raw_msg[:(gflen.val * 2)]
+        logging.debug(f"global feature hex {tmp}")
+        global_features = Bitfield.decode(tmp)
+        raw_msg = raw_msg[(gflen.val * 2):] 
         # get the raw msg part of flen
-        flen = u16Int(raw_msg[flenStart:flenEnd])
+        flen = u16Int(raw_msg[:4])
         flen.decode()
-        # if flen > 0, it mean features field is not empty
-        # first convert raw hex str to int, then convert it to bitfield
-        # where value indicate the index of bit is on or off
+        raw_msg = raw_msg[4:]
         features = []
-        if flen.val > 0:
-            tmp = raw_msg[flenEnd : flenEnd + (flen.val * 2)]
-            features = Bitfield.decode(tmp)
-        tvl_stream = TVLRecord(raw_msg[flenEnd + flen.val * 2 :])
+        tmp = raw_msg[:(flen.val * 2)]
+        features = Bitfield.decode(tmp)
+        raw_msg = raw_msg[(flen.val * 2):]
+        tvl_stream = TVLRecord(raw_msg)
         tvl_stream.decode()
         return InitData(
             gflen=gflen,
