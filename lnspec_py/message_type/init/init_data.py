@@ -70,17 +70,9 @@ class InitData:
         )
 
     def encode(self) -> str:
-        # Here we check if glfen value > 0
-        # if yes, then we convert global features back to hex str
-        # first we convert bitfield to decimal int
-        # then we pad 0s in front if len(str)%2 != 0
         global_features = ""
         if len(self.global_features) > 0:
             global_features = Bitfield.encode(self.global_features)
-        # Here we check if flen value > 0
-        # if yes, then we convert global features back to hex str
-        # first we convert bitfield to decimal int
-        # then we pad 0s in front if len(str)%2 != 0
         features = ""
         if len(self.features) > 0:
             features = Bitfield.encode(self.features)
