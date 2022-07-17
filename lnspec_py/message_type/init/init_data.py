@@ -39,33 +39,18 @@ class InitData:
         """
         Decode the init message data from a raw hex message message
         """
-        # Take the first 4 hex digit (are 2 bytes) to decode the size f the global feature encoding
-        gflen = u16Int(raw_msg[:4])
-        gflen.decode()
-        raw_msg = raw_msg[4:]
         # if glen > 0, it mean global features field is not empty
         # first convert raw hex str to int, then convert it to bitfield and
         # finally we assert if the size of globalfeatures is equal to the size specify in gflen
-        global_features = []
-        tmp = raw_msg[:(gflen.val * 2)]
-        logging.debug(f"global feature hex {tmp}")
-        global_features = Bitfield.decode(tmp)
-        raw_msg = raw_msg[(gflen.val * 2):] 
-        # get the raw msg part of flen
-        flen = u16Int(raw_msg[:4])
-        flen.decode()
-        raw_msg = raw_msg[4:]
-        features = []
-        tmp = raw_msg[:(flen.val * 2)]
-        features = Bitfield.decode(tmp)
-        raw_msg = raw_msg[(flen.val * 2):]
+        global_features, raw_msg = Bitfield.decode_with_len(raw_msg)
+        features, raw_msg = Bitfield.decode_with_len(raw_msg)
         tvl_stream = TVLRecord(raw_msg)
         tvl_stream.decode()
         return InitData(
-            gflen=gflen,
-            global_features=global_features,
-            flen=flen,
-            features=features,
+            gflen=global_features.size,
+            global_features=global_features.bitfiled,
+            flen=features.size,
+            features=features.bitfiled,
             tvl_stream=tvl_stream,
         )
 
