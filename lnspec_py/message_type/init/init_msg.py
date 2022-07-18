@@ -20,11 +20,10 @@ class InitMessage(Message):
 
     @staticmethod
     def decode(raw_msg: str) -> "InitMessage":
-        logging.debug(f"Int message hex type: {raw_msg[:4]}")
-        type = u16Int(raw_msg[:4])
-        type.decode()
-        logging.debug(f"Init message hex data: {raw_msg[4:]}")
-        data = InitData.decode(raw_msg=raw_msg[4:])
+        logging.debug(f"Int message hex type: {raw_msg}")
+        type, raw_msg = u16Int.decode_with_hex_str(raw_msg)
+        logging.debug(f"Init message hex data: {raw_msg}")
+        data = InitData.decode(raw_msg=raw_msg)
         return InitMessage(msg_type=type, data=data)
 
     def encode(self) -> str:
