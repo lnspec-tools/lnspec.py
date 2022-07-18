@@ -38,16 +38,9 @@ class PingMessage(Message):
         """
         Decode the Ping message data from a raw hex message
         """
-
-        msg_type = u16Int(raw_msg[:4])
-        msg_type.decode()
-        raw_msg = raw_msg[4:]
-        numPongBytes = u16Int(raw_msg[:4])
-        numPongBytes.decode()
-        raw_msg = raw_msg[4:]
-        bytesLen = u16Int(raw_msg[:4])
-        bytesLen.decode()
-        raw_msg = raw_msg[4:]
+        msg_type, raw_msg = u16Int.decode_with_hex_str(raw_msg)
+        numPongBytes, raw_msg = u16Int.decode_with_hex_str(raw_msg)
+        bytesLen, raw_msg = u16Int.decode_with_hex_str(raw_msg)
         ignored = Bitfield.decode(raw_msg[: bytesLen.val * 2])
         return PingMessage(msg_type, numPongBytes, bytesLen, ignored)
 

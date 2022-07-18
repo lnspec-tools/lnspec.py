@@ -83,9 +83,7 @@ class Bitfield:
         return: A touble compose by (BitfiledData, remains buffer)
         """
         # Take the first 4 hex digit (are 2 bytes) to decode the size f the array
-        size_buf = hex_str[:4]
-        hex_str = hex_str[4:]
-        lenght = u16Int(size_buf).decode()
+        lenght, hex_str = u16Int.decode_with_hex_str(hex_str)
         if lenght.val == 0:
             return (BitfieldData(bitfiled=[], size=lenght), hex_str)
         bitfiled_buff = hex_str[: (lenght.val * 2)]

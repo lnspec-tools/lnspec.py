@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Tuple
 
 """
 This module contain all the fundamental Ints types
@@ -27,6 +28,13 @@ class u16Int(Integer):
             self.val = bytes.fromhex(self.val)
         self.val = int.from_bytes(self.val, "big")
         return self
+
+    @staticmethod
+    def decode_with_hex_str(hex_str: str) -> "tuple('u16Int', str)":
+        val = u16Int(hex_str[:4])
+        hex_str = hex_str[4:]
+        val.decode()
+        return val, hex_str
 
 
 class u32Int(Integer):

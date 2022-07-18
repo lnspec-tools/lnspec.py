@@ -37,16 +37,10 @@ class ErrorMessage(Message):
         """
         Decode the ERROR message data from a raw hex message message
         """
-
-        msg_type = u16Int(raw_msg[:4])
-        msg_type.decode()
-        raw_msg = raw_msg[4:]
+        msg_type, raw_msg = u16Int.decode_with_hex_str(raw_msg)
         channel_ID = ChannelId(raw_msg[: 32 * 2])
         raw_msg = raw_msg[32 * 2 :]
-        len = u16Int(raw_msg[:4])
-        len.decode()
-
-        raw_msg = raw_msg[4:]
+        len, raw_msg = u16Int.decode_with_hex_str(raw_msg)
         data = Bitfield.decode(raw_msg[: len.val * 2])
         return ErrorMessage(msg_type, channel_ID, len, data)
 
