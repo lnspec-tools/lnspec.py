@@ -3,7 +3,7 @@ import lnspec_py.basic_type.int as Integers
 
 
 def test_u16Int():
-    a = Integers.u16Int(16)
+    a = Integers.U16Int(16)
     a.encode()
     assert a.val.hex() == "0010"
     a.decode()
@@ -11,7 +11,7 @@ def test_u16Int():
 
 
 def test_u32Int():
-    a = Integers.u32Int(4294967295)
+    a = Integers.U32Int(4294967295)
     a.encode()
     assert a.val.hex() == "ffffffff"
     a.decode()
@@ -19,7 +19,7 @@ def test_u32Int():
 
 
 def test_u64Integer():
-    a = Integers.u64Int(18446744073709551615)
+    a = Integers.U64Int(18446744073709551615)
     a.encode()
     assert a.val.hex() == "ffffffffffffffff"
     a.decode()

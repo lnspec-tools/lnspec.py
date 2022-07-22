@@ -17,28 +17,28 @@ class Integer(ABC):
         pass
 
 
-class u16Int(Integer):
-    def __init__(self, val):
+class U16Int(Integer):
+    def __init__(self, val: int) -> None:
         self.val = val
 
     def encode(self):
         self.val = int.to_bytes(self.val, 2, "big")
 
-    def decode(self) -> "u16Int":
-        if type(self.val) == str:
+    def decode(self) -> "U16Int":
+        if isinstance(self.val, str):
             self.val = bytes.fromhex(self.val)
         self.val = int.from_bytes(self.val, "big")
         return self
 
     @staticmethod
-    def decode_with_hex_str(hex_str: str) -> Tuple["u16Int", str]:
-        val = u16Int(hex_str[:4])
+    def decode_with_hex_str(hex_str: str) -> Tuple["U16Int", str]:
+        val = U16Int(hex_str[:4])
         hex_str = hex_str[4:]
         val.decode()
         return val, hex_str
 
 
-class u32Int(Integer):
+class U32Int(Integer):
     def __init__(self, val):
         self.val = val
 
@@ -46,19 +46,19 @@ class u32Int(Integer):
         self.val = int.to_bytes(self.val, 4, "big")
 
     def decode(self):
-        if type(self.val) == str:
+        if isinstance(self.val, str):
             self.val = bytes.fromhex(self.val)
         self.val = int.from_bytes(self.val, "big")
 
     @staticmethod
-    def decode_with_hex_str(hex_str: str) -> Tuple["u32Int", str]:
-        val = u32Int(hex_str[:8])
+    def decode_with_hex_str(hex_str: str) -> Tuple["U32Int", str]:
+        val = U32Int(hex_str[:8])
         hex_str = hex_str[8:]
         val.decode()
         return val, hex_str
 
 
-class u64Int(Integer):
+class U64Int(Integer):
     def __init__(self, val):
         self.val = val
 
@@ -69,8 +69,8 @@ class u64Int(Integer):
         self.val = int.from_bytes(self.val, "big")
 
     @staticmethod
-    def decode_with_hex_str(hex_str: str) -> Tuple["u64Int", str]:
-        val = u16Int(hex_str[:16])
+    def decode_with_hex_str(hex_str: str) -> Tuple["U64Int", str]:
+        val = U16Int(hex_str[:16])
         hex_str = hex_str[16:]
         val.decode()
         return val, hex_str
@@ -105,7 +105,7 @@ class bigsizeInt(Integer):
         self.val = val
 
     def decode(self):
-        if type(self.val) == bytes:
+        if isinstance(self.val, bytes):
             self.val = self.val.hex()
         binary = bytes.fromhex(self.val)
         if (

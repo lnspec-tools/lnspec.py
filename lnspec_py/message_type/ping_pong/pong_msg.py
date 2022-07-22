@@ -5,7 +5,7 @@ as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#con
 
 import logging
 from typing import List
-from lnspec_py.basic_type.int import u16Int
+from lnspec_py.basic_type.int import U16Int
 from lnspec_py.basic_type.bitmask import Bitfield
 from lnspec_py.basic_type.hex_type import ChannelId
 from lnspec_py.message_type.msg import Message
@@ -22,8 +22,8 @@ class PongMessage(Message):
 
     def __init__(
         self,
-        msg_type: u16Int,
-        bytesLen: u16Int,
+        msg_type: U16Int,
+        bytesLen: U16Int,
         ignored: List[int],
     ) -> None:
         self.msg_type = msg_type
@@ -36,8 +36,9 @@ class PongMessage(Message):
         """
         Decode the Pong message data from a raw hex message
         """
-        msg_type, raw_msg = u16Int.decode_with_hex_str(raw_msg)
-        bytesLen, raw_msg = u16Int.decode_with_hex_str(raw_msg)
+
+        msg_type, raw_msg = U16Int.decode_with_hex_str(raw_msg)
+        bytesLen, raw_msg = U16Int.decode_with_hex_str(raw_msg)
         ignored = Bitfield.decode(raw_msg[: bytesLen.val * 2])
         return PongMessage(msg_type, bytesLen, ignored)
 
