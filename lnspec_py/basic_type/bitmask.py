@@ -30,7 +30,7 @@ from dataclasses import dataclass
 import logging
 from typing import List, Tuple
 
-from lnspec_py.basic_type.int import u16Int
+from lnspec_py.basic_type.int import U16Int
 
 
 @dataclass
@@ -41,7 +41,7 @@ class BitfieldData:
     the same time is more than enought
     """
 
-    def __init__(self, bitfiled: List[int], size: u16Int) -> None:
+    def __init__(self, bitfiled: List[int], size: U16Int) -> None:
         self.bitfiled = bitfiled
         self.size = size
 
@@ -83,7 +83,7 @@ class Bitfield:
         return: A touble compose by (BitfiledData, remains buffer)
         """
         # Take the first 4 hex digit (are 2 bytes) to decode the size f the array
-        lenght, hex_str = u16Int.decode_with_hex_str(hex_str)
+        lenght, hex_str = U16Int.decode_with_hex_str(hex_str)
         if lenght.val == 0:
             return (BitfieldData(bitfiled=[], size=lenght), hex_str)
         bitfiled_buff = hex_str[: (lenght.val * 2)]
