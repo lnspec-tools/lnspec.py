@@ -5,7 +5,7 @@ as specify in https://github.com/lightning/bolts/blob/master/01-messaging.md#the
 
 import logging
 from typing import List
-from lnspec_py.basic_type.int import u16Int
+from lnspec_py.basic_type.int import U16Int
 from lnspec_py.basic_type.bitmask import Bitfield
 from lnspec_py.basic_type.hex_type import ChannelId
 from lnspec_py.message_type.msg import Message
@@ -21,9 +21,9 @@ class ErrorMessage(Message):
 
     def __init__(
         self,
-        msg_type: u16Int,
+        msg_type: U16Int,
         channel_id: ChannelId,
-        len: u16Int,
+        len: U16Int,
         data: List[int],
     ) -> None:
         self.msg_type = msg_type
@@ -37,10 +37,11 @@ class ErrorMessage(Message):
         """
         Decode the ERROR message data from a raw hex message message
         """
-        msg_type, raw_msg = u16Int.decode_with_hex_str(raw_msg)
+
+        msg_type, raw_msg = U16Int.decode_with_hex_str(raw_msg)
         channel_ID = ChannelId(raw_msg[: 32 * 2])
         raw_msg = raw_msg[32 * 2 :]
-        len, raw_msg = u16Int.decode_with_hex_str(raw_msg)
+        len, raw_msg = U16Int.decode_with_hex_str(raw_msg)
         data = Bitfield.decode(raw_msg[: len.val * 2])
         return ErrorMessage(msg_type, channel_ID, len, data)
 
