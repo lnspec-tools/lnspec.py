@@ -16,12 +16,10 @@
   <h3 align="center">lnspec.py</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    A simple tool for decode and encode lightning message!
     <br />
     <a href="https://github.com/lnspec-tools/lnspec.py"><strong>Explore the docs »</strong></a>
     <br />
-    <br />
-    <a href="https://github.com/lnspec-tools/lnspec.py">View Demo</a>
     ·
     <a href="https://github.com/lnspec-tools/lnspec.py/issues">Report Bug</a>
     ·
