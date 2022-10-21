@@ -41,8 +41,8 @@ class BitfieldData:
     the same time is more than enought
     """
 
-    def __init__(self, bitfiled: List[int], size: U16Int) -> None:
-        self.bitfiled = bitfiled
+    def __init__(self, bitfield: List[int], size: U16Int) -> None:
+        self.bitfield = bitfield
         self.size = size
 
 
@@ -85,10 +85,10 @@ class Bitfield:
         # Take the first 4 hex digit (are 2 bytes) to decode the size f the array
         lenght, hex_str = U16Int.decode_with_hex_str(hex_str)
         if lenght.val == 0:
-            return (BitfieldData(bitfiled=[], size=lenght), hex_str)
+            return (BitfieldData(bitfield=[], size=lenght), hex_str)
         bitfiled_buff = hex_str[: (lenght.val * 2)]
         logging.debug(f"bitfiled hex {bitfiled_buff}")
         bitfiled = Bitfield.decode(bitfiled_buff)
         hex_str = hex_str[(lenght.val * 2) :]
         logging.info(f"Size array inside {len(hex_str)}")
-        return (BitfieldData(bitfiled=bitfiled, size=lenght), hex_str)
+        return (BitfieldData(bitfield=bitfiled, size=lenght), hex_str)

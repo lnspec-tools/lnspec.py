@@ -40,6 +40,4 @@ class TVLRecord:
                 + str(bytes.fromhex(self.value[x]).hex())
             )
         self.encoded = res
-
-
-# 00023fff0003ffffff init message eg
+        return self.encoded

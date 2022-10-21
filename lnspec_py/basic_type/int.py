@@ -21,8 +21,9 @@ class U16Int(Integer):
     def __init__(self, val: int) -> None:
         self.val = val
 
-    def encode(self):
+    def encode(self) -> str:
         self.val = int.to_bytes(self.val, 2, "big")
+        return self.val.hex()
 
     def decode(self) -> "U16Int":
         if isinstance(self.val, str):
@@ -42,8 +43,9 @@ class U32Int(Integer):
     def __init__(self, val):
         self.val = val
 
-    def encode(self):
+    def encode(self) -> str:
         self.val = int.to_bytes(self.val, 4, "big")
+        return self.val.hex()
 
     def decode(self):
         if isinstance(self.val, str):
@@ -62,8 +64,9 @@ class U64Int(Integer):
     def __init__(self, val):
         self.val = val
 
-    def encode(self):
+    def encode(self) -> str:
         self.val = int.to_bytes(self.val, 8, "big")
+        return self.val.hex()
 
     def decode(self):
         self.val = int.from_bytes(self.val, "big")
