@@ -48,9 +48,9 @@ class InitData:
         tvl_stream.decode()
         return InitData(
             gflen=global_features.size,
-            global_features=global_features.bitfiled,
+            global_features=global_features.bitfield,
             flen=features.size,
-            features=features.bitfiled,
+            features=features.bitfield,
             tvl_stream=tvl_stream,
         )
 
