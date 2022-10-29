@@ -1,3 +1,6 @@
+from typing import Tuple
+
+
 class HexType:
     def __init__(self, val, size=32):
         self.size = size
@@ -16,7 +19,16 @@ class ChainHash(HexType):
 
 
 class ChannelId(HexType):
-    pass
+    def encode(self) -> str:
+        self.val.encode()
+        return self.val
+
+    @staticmethod
+    def decode_with_hex_str(hex_str: str) -> Tuple["ChannelId", str]:
+        hex_str = hex_str[: (32 * 2)]
+        val = ChannelId(hex_str)
+        val.decode()
+        return val, hex_str
 
 
 class sha256(HexType):
