@@ -54,9 +54,4 @@ class ErrorMessage(Message):
         self.msg_type.encode()
         self.channel_id.encode()
         self.len.encode()
-        return (
-            self.msg_type.val.hex()
-            + self.channel_id.val.hex()
-            + self.len.val.hex()
-            + data
-        )
+        return self.msg_type.val.hex() + self.channel_id.val + self.len.val.hex() + data
