@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from lnspec_py.message_type.bolt1 import InitMsg, ErrorMsg
-from .utils import LNMessage
+from .utils import LNMessage, bitfield
 from pyln.spec.bolt1 import bolt
 
 
@@ -22,7 +22,7 @@ def test_simple_error_message():
         "error",
         csv=bolt.csv,
         channel_id="399986f8d47b36d4f21c07de0ce7d422de244ed58a72e6b44d26985fe1e7465c",
-        data="0003",
+        data="an error occurs".encode("utf8").hex(),
     )
 
     assert str(msg.encode().hex()) == msg.encode().hex()
