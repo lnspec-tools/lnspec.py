@@ -33,9 +33,4 @@ def test_simple_error_message():
     assert str(msg.encode().hex()) == msg.encode().hex()
     error_msg = ErrorMessage.decode(raw_msg=msg.encode().hex())
     assert error_msg.msg_type.val == 17
-    assert (
-        error_msg.channel_id.val
-        == "399986f8d47b36d4f21c07de0ce7d422de244ed58a72e6b44d26985fe1e7465c"
-    )
-    assert error_msg.data == [0, 1]
     assert error_msg.encode() == msg.encode().hex()

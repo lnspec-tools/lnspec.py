@@ -11,7 +11,7 @@ class HexType:
         self.val = bytes.fromhex(self.val)
 
     def decode(self):
-        self.val = self.val.hex()
+        pass
 
 
 class ChainHash(HexType):
@@ -21,13 +21,19 @@ class ChainHash(HexType):
 class ChannelId(HexType):
     def encode(self) -> str:
         self.val.encode()
+        # Source https://stackoverflow.com/a/27023448/10854225
         return self.val
 
     @staticmethod
+    def decode_from_hex(hex_str: str) -> Tuple["ChannelId", str]:
+        return ChannelId.decode_with_hex_str(hex_str)
+
+    @staticmethod
     def decode_with_hex_str(hex_str: str) -> Tuple["ChannelId", str]:
-        hex_str = hex_str[: (32 * 2)]
-        val = ChannelId(hex_str)
+        buff = hex_str[: (32 * 2)]
+        val = ChannelId(buff)
         val.decode()
+        hex_str = hex_str[(32 * 2) :]
         return val, hex_str
 
 

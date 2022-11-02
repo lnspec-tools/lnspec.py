@@ -1,3 +1,4 @@
+import pytest
 import lnspec_py.basic_type.hex_type as hex_type
 
 """
@@ -7,6 +8,7 @@ ChainHash: https://github.com/lightning/bolts/blob/master/00-introduction.md#glo
 """
 
 
+@pytest.mark.skip(reason="this need to be rewritten because it is testing anythings")
 def test_hex_type():
     a = hex_type.ChainHash(
         "6fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000"
